@@ -1,0 +1,28 @@
+1.In the search bar of the AWS Console look up Cloud9. Then select the Cloud9 service from the list of result
+2. Create Cloud9 environment:
+
+Click on Create environment, type in the name de-c1w2.
+Scroll down and choose t3.small in the instance type.
+In networking settings, make sure to click on Secure Shell (SSH) otherwise your instance will not be accessible.
+Click on the VPC settings dropdown, choose the VPC named de-c1w2.
+For the subnet, select the public one: de-c1w2-public-subnet.
+Click on Create button.
+Wait for the environment to be created which might take 1-2 minutes.
+Click on Open to access AWS Cloud9 IDE. This is a cloud-based environment that lets you write, run, and debug your code with just a browser.
+3. Use the following command (you can copy and paste it) in the terminal to download the required files for the lab:
+
+aws s3 cp --recursive s3://dlai-data-engineering/labs/c1w2-187976/ ./
+
+4. Open the C1_W2_Assignment.md file (double-click on it), click on Preview, and choose Preview File C1_W2_Assignment.md from the drop-down.
+5. Before you follow the lab instructions in the C1_W2_Assignment.md file, there's one more step that you need to do in order to setup your development environment. In the terminal of Cloud9, run the following command:
+
+ source scripts/setup.sh
+This command will install Terraform and give you the Jupyter Lab URL. Copy the URL from the output, open a new tab, and paste the URL to access the Jupyter Lab environment. You will use it in the final part of the lab.
+
+6. Go back to the tab with the Cloud9 environment. Follow the lab instructions in the C1_W2_Assignment.md file
+
+In this lab, you will set up and run a data pipeline example that shows all the stages of the data engineering lifecycle. 
+Your source system will be a relational database instantiated as MySQL database in Amazon RDS (Relational Database Service).
+You will first explore the source database with a sample dataset, then use AWS Glue to extract, transform, and load (ETL) the data in your data pipeline,
+storing it in the AWS object storage Amazon S3. You will finally query the stored data using Amazon Athena to build a data visualization dashboard in Jupyter Lab.
+To define and configure the components of this data pipeline example, you will use Terraform as Infrastructure as Code (IaC) service.

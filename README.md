@@ -17,13 +17,13 @@ aws s3 cp --recursive s3://dlai-data-engineering/labs/c1w2-187976/ ./
 5. Before you follow the lab instructions in the C1_W2_Assignment.md file, there's one more step that you need to do in order to setup your development environment. In the terminal of Cloud9, run the following command:
 
 source scripts/setup.sh
+
 This command will install Terraform and give you the Jupyter Lab URL. Copy the URL from the output, open a new tab, and paste the URL to access the Jupyter Lab environment. You will use it in the final part of the lab.
-Digest: sha256:5ff7c7408250c57cd6e3325f30bb73e25168539673b95c7ba0ad3a651c585bf1
-Status: Downloaded newer image for public.ecr.aws/deeplearning-ai/de-c1w2-jupyter:latest
-public.ecr.aws/deeplearning-ai/de-c1w2-jupyter:latest
-50b18a22549cb4356635f3b4cc1e4e084f882076392f1a6a06c979fdfcde682b
 Jupyter lab deployed
-Container id 50b18a22549c
+Container id 613e38043345
+jupyter url local http://127.0.0.1:8888/lab?token=53e544ea56eca5319bc1f364875f523e8c57987f7c5cd169
+jupyter url local ec2-18-212-84-61.compute-1.amazonaws.com
+Jupyter is running at: http://ec2-18-212-84-61.compute-1.amazonaws.com:8888/lab?token=53e544ea56eca5319bc1f364875f523e8c57987f7c5cd169
 
 docker logs 50b18a22549c
 docker exec -it 50b18a22549c bash

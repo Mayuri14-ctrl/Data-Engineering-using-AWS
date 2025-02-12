@@ -1,0 +1,53 @@
+1. To find the Application Load Balancer (ALB) that has been created as part of your application architecture, go to the AWS console and search for EC2.
+In the left panel click on Load Balancers (bottom of the panel)
+
+3.4. You will see a load balancer called de-c1w3-alb. Copy the DNS Name field. DNS stands for Domain Name System which translates domain name like example.com into an IP address (you can read more about DNS here).
+
+3.5. Open a new browser window and paste the DNS Name. You will see the following message displayed on the web page:
+
+4.1. To perform stress tests over your current architecture, you will use an open-source benchmarking tool called Apache Benchmark. This tool is used to test the ability of a website to handle a large number of HTTP requests at the same time.
+
+In the AWS console, search for the CloudShell service:
+
+4.2. Install the Apache Benchmark tool with the terminal command (the option -y allows to automatically confirm the package installation without manual intervention):
+sudo yum install httpd-tools -y
+
+4.3. To generate a stress test over your server you will need to make multiple HTTP GET requests with some concurrency meaning, the requests run at the same time. This can be done with the ab command of Apache Benchmark. Run the following command, replacing ALB-DNS with the DNS Name of your ALB (it should be in the address of the browser window where you saw the dashboard representation).
+
+
+ab -n 7000 -c 50 http://<ALB-DNS>/
+
+ab -n 7000 -c 50 http://de-c1w3-alb-1471076348.us-east-1.elb.amazonaws.com/
+
+5 - Enhancing Security
+5.1. Take the DNS Name of your ALB and paste it into your browser search bar pointing to the port 90, as follows:
+
+http://de-c1w3-alb-1471076348.us-east-1.elb.amazonaws.com:90
+
+ou will see a list of security groups, out of which you will work with the following ones:
+
+de-c1w3-ec2-sg: This is the security group of your EC2 instances (servers).
+de-c1w3-alb-sg: This is the security group of the Load Balancer.
+5.3. Click on the id for the security group with the name de-c1w3-ec2-sg. In the Inbound Rules section, you will find the following rule:
+
+Rule with Type: All TCP, Port range: 0-65535 and as source a security group id. This source is the security group of the ALB. The purpose of this security group is to ensure that servers will only receive traffic from the ALB.
+5.4. Go back and click on the ID for the de-c1w3-alb-sg security group. Check the Inbound Rules to find the following rule:
+
+Rule with Type: All TCP, Port range: 0-65535 and Source: 0.0.0.0/0 (which means all IP addresses). This rule means that any source can access the ALB using any port, which is quite open and insecure!
+5.5. Now, click on Edit inbound rules and delete the current rule. Then, add a new rule with the following properties:
+
+Port range: 80
+Source: 0.0.0.0/0
+So now although all the internet can have access to your ALB, the traffic is only allowed through port 80, so if you go back to your browser and point to port 90 (<ALB-DNS>:90) you should not have access to it.
+
+Note: You may still see a display of the website previously accessed through port 90 and stored in a cache. But if you refresh the webpage, it will not load.
+
+To check if the rule was properly created, in your browser, point to port 80 (by default you can only put <ALB-DNS> on your browser search bar) and see if you can see the Dashboard message.
+
+By configuring security groups, you restricted access to sensitive data presented on port 90 of the ALB to authorized personnel within the company. This was done to improve the system's overall security, following the guidelines of the AWS Well-Architected Framework's Security pillar and the principle of “Prioritize security”.
+
+
+6 - Checking EC2 Availability
+
+ab -n 1000000 -c 200 http://de-c1w3-alb-1471076348.us-east-1.elb.amazonaws.com/
+
